@@ -33,6 +33,30 @@ site = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# mypy is applied as a *ratchet*: only the modules listed in `files` are
+# type-checked (under --strict), and the list grows as modules are annotated.
+# This keeps the CI type gate green and meaningful instead of drowning in
+# pre-existing untyped-code noise. To extend coverage, make a module pass
+# `mypy --strict src/lattice_digest/<module>.py` and add it to `files`.
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "src"
+strict = true
+warn_unused_configs = true
+ignore_missing_imports = true
+files = [
+  "src/lattice_digest/models.py",
+  "src/lattice_digest/text.py",
+  "src/lattice_digest/dedup.py",
+  "src/lattice_digest/venue_registry.py",
+  "src/lattice_digest/radar_freshness.py",
+  "src/lattice_digest/artifact_paths.py",
+  "src/lattice_digest/ranking_explainability.py",
+  "src/lattice_digest/recommendation_calibration.py",
+  "src/lattice_digest/source_health_ledger.py",
+  "src/lattice_digest/library_taxonomy.py",
+]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
