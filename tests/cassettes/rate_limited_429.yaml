@@ -1,0 +1,35 @@
+# Hand-authored cassette (not recorded from a live endpoint): two consecutive
+# HTTP 429 responses carrying Retry-After, so the real urllib retry/backoff loop
+# is exercised and then gives up. Replayed with record_mode="none".
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent: [lcd-test]
+    method: GET
+    uri: https://api.example.test/works
+  response:
+    body:
+      string: '{"error":"rate limited"}'
+    headers:
+      Retry-After: ['7']
+      Content-Type: [application/json]
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: null
+    headers:
+      User-Agent: [lcd-test]
+    method: GET
+    uri: https://api.example.test/works
+  response:
+    body:
+      string: '{"error":"rate limited"}'
+    headers:
+      Retry-After: ['7']
+      Content-Type: [application/json]
+    status:
+      code: 429
+      message: Too Many Requests
+version: 1

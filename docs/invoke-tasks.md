@@ -44,3 +44,12 @@ invoke --list                       # see every task
 | `invoke build-site` | Build the public GitHub Pages website |
 
 Run `invoke <task> --help` for per-task options.
+
+## Testing notes
+
+- **HTTP replay determinism.** `tests/test_http_vcr.py` replays hand-authored
+  cassettes in `tests/cassettes/` through the *real* urllib stack via
+  [vcrpy](https://vcrpy.readthedocs.io/) (`record_mode="none"`, offline). This
+  exercises the genuine `HTTPError` / `Retry-After` / retry-backoff path rather
+  than monkey-patching `urlopen`. To add a scenario, author a cassette YAML and
+  a test that replays it — do not record against live academic APIs.
