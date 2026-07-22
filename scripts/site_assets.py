@@ -92,11 +92,13 @@ a:hover { text-decoration: underline; }
 }
 .nav-link:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
 .nav-link.active { color: var(--accent); background: var(--accent-soft); }
-.theme-toggle {
+.theme-toggle, .lang-toggle {
   border: 1px solid var(--border); background: var(--surface); color: var(--text);
-  width: 36px; height: 36px; border-radius: 9px; cursor: pointer; font-size: 1rem;
+  height: 36px; border-radius: 9px; cursor: pointer; font-size: 1rem;
 }
-.theme-toggle:hover { background: var(--surface-2); }
+.theme-toggle { width: 36px; }
+.lang-toggle { min-width: 40px; padding: 0 .55rem; font-size: .82rem; font-weight: 700; }
+.theme-toggle:hover, .lang-toggle:hover { background: var(--surface-2); border-color: var(--accent); }
 
 /* Layout */
 .site-main { max-width: var(--maxw); margin: 0 auto; padding: 1.6rem 1.2rem 3rem; }
@@ -178,6 +180,7 @@ html[data-theme="dark"] .btn-primary, :root[data-theme="dark"] .btn-primary { co
 .crumb { font-size: .85rem; color: var(--text-soft); }
 .article-title { font-size: 1.7rem; margin: .5rem 0; line-height: 1.3; }
 .article-chips { display: flex; gap: .4rem; flex-wrap: wrap; margin: .5rem 0; }
+.article-langhint { font-size: .8rem; color: var(--text-soft); margin: .4rem 0 0; }
 .article-source { font-size: .82rem; margin: .2rem 0 0; }
 .article-layout { display: grid; grid-template-columns: 240px 1fr; gap: 2rem; align-items: start; }
 .toc {
@@ -253,9 +256,59 @@ APP_JS = r"""(function () {
     });
   }
 
+  // ---- Language toggle ----------------------------------------------------
+  var I18N = window.__I18N__ || {};
+  var lang;
+  try { lang = localStorage.getItem('lcd-lang'); } catch (e) {}
+  if (lang !== 'en' && lang !== 'zh') lang = window.__LANG_DEFAULT__ || 'zh';
+
+  function tr(key) {
+    var entry = I18N[key];
+    if (!entry) return '';
+    return entry[lang] || entry.zh || '';
+  }
+
+  function applyLang() {
+    document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-Hans');
+    var nodes = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      var text = tr(el.getAttribute('data-i18n'));
+      if (!text) continue;
+      var n = el.getAttribute('data-n');
+      if (n !== null) text = text.replace('%n', n);
+      el.textContent = text;
+    }
+    var ph = document.querySelectorAll('[data-i18n-placeholder]');
+    for (var j = 0; j < ph.length; j++) {
+      ph[j].setAttribute('placeholder', tr(ph[j].getAttribute('data-i18n-placeholder')));
+    }
+    var ar = document.querySelectorAll('[data-i18n-aria]');
+    for (var k = 0; k < ar.length; k++) {
+      ar[k].setAttribute('aria-label', tr(ar[k].getAttribute('data-i18n-aria')));
+    }
+    var lt = document.querySelector('.lang-toggle');
+    if (lt) lt.textContent = lang === 'en' ? '中' : 'EN';
+  }
+
+  applyLang();
+
+  var langBtn = document.querySelector('.lang-toggle');
+  if (langBtn) {
+    langBtn.addEventListener('click', function () {
+      lang = lang === 'en' ? 'zh' : 'en';
+      try { localStorage.setItem('lcd-lang', lang); } catch (e) {}
+      applyLang();
+      if (typeof rerenderSearch === 'function') rerenderSearch();
+    });
+  }
+
   // ---- Search -------------------------------------------------------------
   var input = document.getElementById('site-search');
   var results = document.getElementById('search-results');
+
+  function rerenderSearch() { if (input && results && !results.hidden) render(input.value); }
+
   if (!input || !results) return;
 
   var index = null;
@@ -287,7 +340,7 @@ APP_JS = r"""(function () {
     }).slice(0, 25);
 
     if (!hits.length) {
-      results.innerHTML = '<div class="search-empty">未找到匹配结果 · No matches.</div>';
+      results.innerHTML = '<div class="search-empty">' + esc(tr('search.nomatch') || 'No matches.') + '</div>';
       results.hidden = false;
       return;
     }

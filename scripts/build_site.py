@@ -40,6 +40,107 @@ SITE_TAGLINE = "Daily retrieval, ranking, and Chinese-language synthesis of latt
 SITE_REPO_URL = "https://github.com/systemslibrarian/Lattice-Crypto-Daily-Digest"
 
 # --------------------------------------------------------------------------- #
+# Internationalisation (UI chrome only; digest bodies stay in their source lang)
+# --------------------------------------------------------------------------- #
+
+LANG_DEFAULT = "zh"
+
+# Single source of truth for every translatable UI string. Rendered pages carry
+# the default (Chinese) text plus a ``data-i18n`` key; the same dict is shipped
+# to the browser so app.js can swap languages client-side without page reloads.
+I18N: dict[str, dict[str, str]] = {
+    "nav.home": {"zh": "首页", "en": "Home"},
+    "nav.daily": {"zh": "日报", "en": "Daily"},
+    "nav.weekly": {"zh": "周报", "en": "Weekly"},
+    "nav.monthly": {"zh": "月报", "en": "Monthly"},
+    "nav.about": {"zh": "关于", "en": "About"},
+    "lang.toggle": {"zh": "切换语言", "en": "Switch language"},
+    "theme.toggle": {"zh": "切换主题", "en": "Toggle theme"},
+    "hero.tag": {"zh": "最新日报", "en": "Latest daily digest"},
+    "hero.read": {"zh": "阅读全文 →", "en": "Read →"},
+    "hero.archive": {"zh": "全部日报", "en": "All dailies"},
+    "stat.selected": {"zh": "最终入选", "en": "Selected"},
+    "stat.high": {"zh": "高优先级", "en": "High-priority"},
+    "stat.window": {"zh": "检索窗口", "en": "Window"},
+    "stat.sources": {"zh": "主要来源", "en": "Sources"},
+    "search.label": {"zh": "🔎 搜索全部情报", "en": "🔎 Search all digests"},
+    "search.placeholder": {
+        "zh": "标题、主题、日期…（如 ML-KEM, LWE, 2026-06）",
+        "en": "title, topic, date… (e.g. ML-KEM, LWE, 2026-06)",
+    },
+    "search.nomatch": {"zh": "未找到匹配结果。", "en": "No matches."},
+    "sec.daily.title": {"zh": "日报 Daily", "en": "Daily"},
+    "sec.daily.sub": {"zh": "每日格密码 / PQC 论文情报", "en": "Daily lattice / PQC paper intelligence"},
+    "sec.weekly.title": {"zh": "周报 Weekly", "en": "Weekly"},
+    "sec.weekly.sub": {"zh": "每周研究综述", "en": "Weekly research synthesis"},
+    "sec.monthly.title": {"zh": "月报 Monthly", "en": "Monthly"},
+    "sec.monthly.sub": {"zh": "月度格密码雷达", "en": "Monthly lattice paper radar"},
+    "sec.more": {"zh": "查看全部 →", "en": "View all →"},
+    "badge.selected": {"zh": "入选", "en": "Selected"},
+    "badge.high": {"zh": "高优", "en": "High"},
+    "health.ok": {"zh": "绿色 正常", "en": "Green · healthy"},
+    "health.warn": {"zh": "黄色 降级", "en": "Amber · degraded"},
+    "health.bad": {"zh": "红色 失败", "en": "Red · failed"},
+    "health.unknown": {"zh": "未知", "en": "Unknown"},
+    "archive.count": {"zh": "共 %n 期", "en": "%n editions"},
+    "empty": {"zh": "暂无内容。", "en": "Nothing here yet."},
+    "toc.head": {"zh": "目录 Contents", "en": "Contents"},
+    "article.source": {"zh": "查看 markdown 源文件", "en": "View markdown source"},
+    "footer.build": {"zh": "由已提交的情报 markdown 生成 · 构建", "en": "Generated from committed digest markdown · Build"},
+    "footer.repo": {"zh": "源代码仓库", "en": "Source repository"},
+    "footer.rss": {"zh": "RSS 订阅", "en": "RSS feed"},
+    "footer.note": {
+        "zh": "引用与排序元数据仅供参考。精读前请务必核对原始来源。",
+        "en": "Citation and ranking metadata is advisory. Always verify against the primary source before deep reading.",
+    },
+    "about.title": {"zh": "关于 About", "en": "About"},
+    "about.p1": {
+        "zh": "本网站是 Lattice Crypto Daily Digest 项目的公开门户，自动把每日、每周、每月生成的格密码 / 后量子密码（PQC）科研情报渲染为可浏览的网页。",
+        "en": "This site is the public portal for the Lattice Crypto Daily Digest — it renders the daily, weekly, and monthly lattice / post-quantum cryptography (PQC) research digests into a browsable website.",
+    },
+    "about.p2": {
+        "zh": "每当有新的日报被提交，网站会通过 GitHub Actions 自动重建并更新。",
+        "en": "Whenever a new digest is committed, the site is automatically rebuilt and redeployed via GitHub Actions.",
+    },
+    "about.h.coverage": {"zh": "覆盖范围 Coverage", "en": "Coverage"},
+    "about.h.how": {"zh": "工作原理 How it works", "en": "How it works"},
+    "about.how.1": {
+        "zh": "定时 GitHub Actions 工作流从 IACR ePrint、arXiv、DBLP、Crossref、OpenAlex 和 Semantic Scholar 检索、过滤、排序并去重格密码 / PQC 论文。",
+        "en": "A scheduled GitHub Actions workflow retrieves, filters, ranks, and de-duplicates lattice / PQC papers from IACR ePrint, arXiv, DBLP, Crossref, OpenAlex, and Semantic Scholar.",
+    },
+    "about.how.2": {
+        "zh": "生成带日期的中文 markdown 情报（以及 JSON），并提交到仓库。",
+        "en": "It writes a dated Chinese-language markdown digest (plus JSON) and commits it to the repository.",
+    },
+    "about.how.3": {
+        "zh": "Pages 工作流从全部已提交的情报重建本网站并发布。",
+        "en": "A Pages workflow rebuilds this site from all committed digests and deploys it.",
+    },
+    "about.h.sources": {"zh": "数据源 Data sources", "en": "Data sources"},
+    "about.note": {
+        "zh": "排序与引用元数据仅供参考。精读前请务必核对原始来源。",
+        "en": "Rankings and citation metadata are advisory only. Always verify against the primary source before deep reading.",
+    },
+    "about.repo": {"zh": "查看源代码仓库 →", "en": "View the source repository →"},
+    "article.langhint": {
+        "zh": "情报正文为中文（论文标题与术语保留英文）。",
+        "en": "Digest body is in Chinese (paper titles and technical terms stay in English).",
+    },
+}
+
+
+def t(key: str) -> str:
+    """Render a translatable span: default (Chinese) text + ``data-i18n`` key."""
+    entry = I18N[key]
+    return f'<span data-i18n="{key}">{html.escape(entry["zh"])}</span>'
+
+
+def i18n_script() -> str:
+    payload = json.dumps(I18N, ensure_ascii=False, separators=(",", ":"))
+    return f'<script>window.__I18N__={payload};window.__LANG_DEFAULT__="{LANG_DEFAULT}";</script>'
+
+
+# --------------------------------------------------------------------------- #
 # Markdown rendering
 # --------------------------------------------------------------------------- #
 
@@ -285,15 +386,15 @@ def page_shell(
     extra_head: str = "",
 ) -> str:
     nav_items = [
-        ("home", "首页 Home", "index.html"),
-        ("daily", "日报 Daily", "daily.html"),
-        ("weekly", "周报 Weekly", "weekly.html"),
-        ("monthly", "月报 Monthly", "monthly.html"),
-        ("about", "关于 About", "about.html"),
+        ("home", "nav.home", "index.html"),
+        ("daily", "nav.daily", "daily.html"),
+        ("weekly", "nav.weekly", "weekly.html"),
+        ("monthly", "nav.monthly", "monthly.html"),
+        ("about", "nav.about", "about.html"),
     ]
     nav = "\n".join(
-        f'<a class="nav-link{" active" if key == active else ""}" href="{_rel(base_url, href)}">{html.escape(label)}</a>'
-        for key, label, href in nav_items
+        f'<a class="nav-link{" active" if key == active else ""}" href="{_rel(base_url, href)}">{t(i18n_key)}</a>'
+        for key, i18n_key, href in nav_items
     )
     css = _rel(base_url, "assets/style.css")
     appjs = _rel(base_url, "assets/app.js")
@@ -310,6 +411,7 @@ def page_shell(
 <link rel="stylesheet" href="{css}">
 <link rel="alternate" type="application/rss+xml" title="Lattice Crypto Digest" href="{feed}">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%94%90%3C/text%3E%3C/svg%3E">
+{i18n_script()}
 {extra_head}
 </head>
 <body>
@@ -326,7 +428,8 @@ def page_shell(
     <nav class="site-nav" aria-label="Primary">
       {nav}
     </nav>
-    <button class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">◐</button>
+    <button class="lang-toggle" type="button" aria-label="Switch language" data-i18n-aria="lang.toggle" title="中文 / English">EN</button>
+    <button class="theme-toggle" type="button" aria-label="Toggle color theme" data-i18n-aria="theme.toggle" title="Toggle theme">◐</button>
   </div>
 </header>
 <main id="main" class="site-main">
@@ -334,12 +437,12 @@ def page_shell(
 </main>
 <footer class="site-footer">
   <div class="footer-inner">
-    <p>Generated from committed digest markdown · Build {html.escape(build_date)}</p>
+    <p>{t('footer.build')} {html.escape(build_date)}</p>
     <p>
-      <a href="{SITE_REPO_URL}">Source repository</a> ·
-      <a href="{feed}">RSS feed</a>
+      <a href="{SITE_REPO_URL}">{t('footer.repo')}</a> ·
+      <a href="{feed}">{t('footer.rss')}</a>
     </p>
-    <p class="footer-note">Citation metadata is advisory. Always verify against the primary source before deep reading.</p>
+    <p class="footer-note">{t('footer.note')}</p>
   </div>
 </footer>
 <script src="{appjs}" defer></script>
@@ -348,15 +451,15 @@ def page_shell(
 """
 
 
-def _stat(label: str, value: str, state: str = "") -> str:
+def _stat(label_html: str, value: str, state: str = "") -> str:
+    """``label_html`` is trusted markup (typically ``t('...')``)."""
     cls = f"stat stat-{state}" if state else "stat"
-    return f'<div class="{cls}"><span class="stat-value">{html.escape(value)}</span><span class="stat-label">{html.escape(label)}</span></div>'
+    return f'<div class="{cls}"><span class="stat-value">{html.escape(value)}</span><span class="stat-label">{label_html}</span></div>'
 
 
 def _health_chip(digest: Digest) -> str:
     state = _health_state(digest.meta.get("source_health", ""))
-    labels = {"ok": "绿色 正常", "warn": "黄色 降级", "bad": "红色 失败", "unknown": "未知"}
-    return f'<span class="chip chip-{state}" title="{html.escape(digest.meta.get("source_health", ""))}">{labels[state]}</span>'
+    return f'<span class="chip chip-{state}" title="{html.escape(digest.meta.get("source_health", ""))}">{t("health." + state)}</span>'
 
 
 def _digest_card(base_url: str, digest: Digest) -> str:
@@ -364,9 +467,9 @@ def _digest_card(base_url: str, digest: Digest) -> str:
     meta = digest.meta
     badges = []
     if meta.get("final_count"):
-        badges.append(f'<span class="badge">入选 {html.escape(meta["final_count"])}</span>')
+        badges.append(f'<span class="badge">{t("badge.selected")} {html.escape(meta["final_count"])}</span>')
     if meta.get("high_priority") and meta["high_priority"] not in {"0", "无"}:
-        badges.append(f'<span class="badge badge-hot">高优 {html.escape(meta["high_priority"])}</span>')
+        badges.append(f'<span class="badge badge-hot">{t("badge.high")} {html.escape(meta["high_priority"])}</span>')
     if meta.get("sources"):
         badges.append(f'<span class="badge badge-muted">{html.escape(meta["sources"])}</span>')
     if digest.kind == "daily" and meta.get("source_health"):
@@ -395,39 +498,39 @@ def render_index(base_url: str, digests: list[Digest], build_date: str) -> str:
         m = latest.meta
         stats = "".join(
             [
-                _stat("最终入选", m.get("final_count", "—")),
-                _stat("高优先级", m.get("high_priority", "—"), "hot" if m.get("high_priority") not in {None, "0", "无"} else ""),
-                _stat("检索窗口", m.get("window", "—")),
-                _stat("主要来源", m.get("sources", "—")),
+                _stat(t("stat.selected"), m.get("final_count", "—")),
+                _stat(t("stat.high"), m.get("high_priority", "—"), "hot" if m.get("high_priority") not in {None, "0", "无"} else ""),
+                _stat(t("stat.window"), m.get("window", "—")),
+                _stat(t("stat.sources"), m.get("sources", "—")),
             ]
         )
         hero = f"""<section class="hero">
-  <div class="hero-tag">最新日报 · Latest daily digest</div>
+  <div class="hero-tag">{t('hero.tag')}</div>
   <h1 class="hero-title">{html.escape(latest.title)}</h1>
   <p class="hero-topics">{html.escape(m.get('topics', ''))}</p>
   <div class="hero-stats">{stats}</div>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="{_rel(base_url, latest.out_name)}">阅读全文 Read →</a>
-    <a class="btn" href="{_rel(base_url, 'daily.html')}">全部日报 Archive</a>
+    <a class="btn btn-primary" href="{_rel(base_url, latest.out_name)}">{t('hero.read')}</a>
+    <a class="btn" href="{_rel(base_url, 'daily.html')}">{t('hero.archive')}</a>
   </div>
 </section>"""
 
-    def grid(title: str, subtitle: str, items: list[Digest], more_href: str) -> str:
+    def grid(prefix: str, items: list[Digest], more_href: str) -> str:
         if not items:
             return ""
         cards = "\n".join(_digest_card(base_url, d) for d in items[:6])
-        more = f'<a class="section-more" href="{_rel(base_url, more_href)}">查看全部 →</a>' if len(items) > 6 else ""
+        more = f'<a class="section-more" href="{_rel(base_url, more_href)}">{t("sec.more")}</a>' if len(items) > 6 else ""
         return f"""<section class="section">
   <div class="section-head">
-    <div><h2 class="section-title">{html.escape(title)}</h2><p class="section-sub">{html.escape(subtitle)}</p></div>
+    <div><h2 class="section-title">{t(prefix + '.title')}</h2><p class="section-sub">{t(prefix + '.sub')}</p></div>
     {more}
   </div>
   <div class="card-grid">{cards}</div>
 </section>"""
 
     search = f"""<section class="search-block">
-  <label class="search-label" for="site-search">🔎 搜索全部情报 · Search all digests</label>
-  <input id="site-search" class="search-input" type="search" placeholder="标题、主题、日期…（如 ML-KEM, LWE, 2026-06）" autocomplete="off" data-search-url="{_rel(base_url, 'search-index.json')}">
+  <label class="search-label" for="site-search">{t('search.label')}</label>
+  <input id="site-search" class="search-input" type="search" placeholder="标题、主题、日期…（如 ML-KEM, LWE, 2026-06）" data-i18n-placeholder="search.placeholder" autocomplete="off" data-search-url="{_rel(base_url, 'search-index.json')}">
   <div id="search-results" class="search-results" hidden></div>
 </section>"""
 
@@ -435,9 +538,9 @@ def render_index(base_url: str, digests: list[Digest], build_date: str) -> str:
         [
             hero,
             search,
-            grid("日报 Daily", "每日格密码/PQC 论文情报", dailies, "daily.html"),
-            grid("周报 Weekly", "Weekly research synthesis", weeklies, "weekly.html"),
-            grid("月报 Monthly", "Monthly lattice paper radar", monthlies, "monthly.html"),
+            grid("sec.daily", dailies, "daily.html"),
+            grid("sec.weekly", weeklies, "weekly.html"),
+            grid("sec.monthly", monthlies, "monthly.html"),
         ]
     )
     return page_shell(
@@ -450,15 +553,16 @@ def render_index(base_url: str, digests: list[Digest], build_date: str) -> str:
 
 
 def render_archive(base_url: str, kind: str, digests: list[Digest], build_date: str) -> str:
-    labels = {"daily": ("日报 Daily", "index.html"), "weekly": ("周报 Weekly", "weekly.html"), "monthly": ("月报 Monthly", "monthly.html")}
+    title_key = {"daily": "sec.daily.title", "weekly": "sec.weekly.title", "monthly": "sec.monthly.title"}[kind]
     items = sorted((d for d in digests if d.kind == kind), key=lambda d: d.sort_key, reverse=True)
-    label = labels[kind][0]
-    cards = "\n".join(_digest_card(base_url, d) for d in items) or '<p class="empty">暂无内容。</p>'
+    label_zh = I18N[title_key]["zh"]
+    cards = "\n".join(_digest_card(base_url, d) for d in items) or f'<p class="empty">{t("empty")}</p>'
+    count = f'<span data-i18n="archive.count" data-n="{len(items)}">共 {len(items)} 期</span>'
     body = f"""<section class="section">
-  <div class="section-head"><div><h1 class="section-title">{html.escape(label)}</h1><p class="section-sub">共 {len(items)} 期 · {len(items)} editions</p></div></div>
+  <div class="section-head"><div><h1 class="section-title">{t(title_key)}</h1><p class="section-sub">{count}</p></div></div>
   <div class="card-grid">{cards}</div>
 </section>"""
-    return page_shell(base_url=base_url, title=f"{label} · {SITE_TITLE}", body=body, build_date=build_date, active=kind)
+    return page_shell(base_url=base_url, title=f"{label_zh} · {SITE_TITLE}", body=body, build_date=build_date, active=kind)
 
 
 def _build_toc(html_body: str) -> str:
@@ -470,7 +574,7 @@ def _build_toc(html_body: str) -> str:
     for level, hid, text in entries:
         clean = re.sub(r"<[^>]+>", "", text).strip()
         items.append(f'<li class="toc-l{level}"><a href="#{hid}">{html.escape(clean)}</a></li>')
-    return f'<nav class="toc" aria-label="Contents"><p class="toc-head">目录 Contents</p><ul>{"".join(items)}</ul></nav>'
+    return f'<nav class="toc" aria-label="Contents"><p class="toc-head">{t("toc.head")}</p><ul>{"".join(items)}</ul></nav>'
 
 
 def render_digest_page(base_url: str, digest: Digest, prev: Digest | None, nxt: Digest | None, build_date: str) -> str:
@@ -499,7 +603,8 @@ def render_digest_page(base_url: str, digest: Digest, prev: Digest | None, nxt: 
     <a class="crumb" href="{_rel(base_url, kind_home)}">← {digest.kind}</a>
     <h1 class="article-title">{html.escape(digest.title)}</h1>
     {meta_chips}
-    <p class="article-source"><a href="{SITE_REPO_URL}/blob/main/{digest.source_path.relative_to(REPO_ROOT).as_posix()}">View markdown source</a></p>
+    <p class="article-langhint">{t('article.langhint')}</p>
+    <p class="article-source"><a href="{SITE_REPO_URL}/blob/main/{digest.source_path.relative_to(REPO_ROOT).as_posix()}">{t('article.source')}</a></p>
   </div>
   <div class="article-layout">
     {toc}
@@ -522,27 +627,27 @@ def render_digest_page(base_url: str, digest: Digest, prev: Digest | None, nxt: 
 def render_about(base_url: str, digests: list[Digest], build_date: str) -> str:
     counts = {k: sum(1 for d in digests if d.kind == k) for k in ("daily", "weekly", "monthly")}
     body = f"""<section class="section prose">
-  <h1 class="section-title">关于 About</h1>
-  <p>本网站是 <strong>Lattice Crypto Daily Digest</strong> 项目的公开门户，自动把每日、每周、每月生成的格密码 / 后量子密码（PQC）科研情报渲染为可浏览的网页。</p>
-  <p>This site is the public portal for the <strong>Lattice Crypto Daily Digest</strong>. It renders the committed daily, weekly, and monthly research digests into a browsable website that redeploys automatically whenever a new digest is committed.</p>
-  <h2>Coverage</h2>
+  <h1 class="section-title">{t('about.title')}</h1>
+  <p>{t('about.p1')}</p>
+  <p>{t('about.p2')}</p>
+  <h2>{t('about.h.coverage')}</h2>
   <div class="hero-stats">
-    {_stat('日报 Daily', str(counts['daily']))}
-    {_stat('周报 Weekly', str(counts['weekly']))}
-    {_stat('月报 Monthly', str(counts['monthly']))}
+    {_stat(t('nav.daily'), str(counts['daily']))}
+    {_stat(t('nav.weekly'), str(counts['weekly']))}
+    {_stat(t('nav.monthly'), str(counts['monthly']))}
   </div>
-  <h2>How it works</h2>
+  <h2>{t('about.h.how')}</h2>
   <ol>
-    <li>A scheduled GitHub Actions workflow retrieves, filters, ranks, and de-duplicates lattice / PQC papers from IACR ePrint, arXiv, DBLP, Crossref, OpenAlex, and Semantic Scholar.</li>
-    <li>It writes a dated Chinese-language markdown digest (plus JSON) and commits it to the repository.</li>
-    <li>A Pages workflow rebuilds this site from all committed digests and deploys it.</li>
+    <li>{t('about.how.1')}</li>
+    <li>{t('about.how.2')}</li>
+    <li>{t('about.how.3')}</li>
   </ol>
-  <h2>Data sources</h2>
+  <h2>{t('about.h.sources')}</h2>
   <ul>
     <li>IACR ePrint · arXiv · DBLP · Crossref · OpenAlex · Semantic Scholar</li>
   </ul>
-  <p class="footer-note">Rankings and citation metadata are advisory only. Always verify against the primary source before deep reading.</p>
-  <p><a class="btn" href="{SITE_REPO_URL}">View the source repository →</a></p>
+  <p class="footer-note">{t('about.note')}</p>
+  <p><a class="btn" href="{SITE_REPO_URL}">{t('about.repo')}</a></p>
 </section>"""
     return page_shell(base_url=base_url, title=f"About · {SITE_TITLE}", body=body, build_date=build_date, active="about")
 

@@ -63,6 +63,24 @@ def test_base_url_is_applied(built: Path) -> None:
     assert "/Lattice-Crypto-Daily-Digest/assets/style.css" in index
 
 
+def test_language_toggle_is_wired(built: Path) -> None:
+    index = (built / "index.html").read_text(encoding="utf-8")
+    assert "window.__I18N__" in index
+    assert 'class="lang-toggle"' in index
+    assert "data-i18n=" in index
+    # Digest pages also carry the toggle and the i18n payload.
+    digest_page = next((built / "d").glob("*.html"))
+    body = digest_page.read_text(encoding="utf-8")
+    assert 'class="lang-toggle"' in body
+    assert "window.__I18N__" in body
+
+
+def test_every_i18n_key_has_both_languages() -> None:
+    for key, entry in build_site.I18N.items():
+        assert "zh" in entry and entry["zh"], f"{key} missing zh"
+        assert "en" in entry and entry["en"], f"{key} missing en"
+
+
 def test_latest_daily_is_featured(built: Path) -> None:
     dailies = sorted(
         (d for d in build_site.load_digests() if d.kind == "daily"),
