@@ -6,6 +6,7 @@ Safety baseline: manual-only usage, dry-run default, explicit low-load mode, no-
 
 ## Manual operation
 
+- [Task runner (`invoke`)](invoke-tasks.md): `tasks.py` centralizes the blessed command/flag matrix (`invoke daily-run`, `invoke ci`, `invoke build-site`, …); plan-by-default, no scheduling.
 - [Manual operations runbook](manual-operations-runbook.md): safe daily operating commands, command safety matrix, generated artifact boundaries.
 - [Workflow command center](workflow-command-center.md): `daily`, `weekly`, `full`, `status`, and `doctor` command behavior.
 - [Manual low-load workflow](manual-low-load-workflow.md): explicit `--low-load`, `--no-network`, and `--offline` usage.
