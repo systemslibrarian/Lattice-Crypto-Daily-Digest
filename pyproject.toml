@@ -29,6 +29,12 @@ dev = [
 site = [
   "markdown>=3.5",
 ]
+# Optional semantic-embedding backend for novelty scoring. Off by default; the
+# hashing embedder keeps the core dependency-free and offline. Enable with
+# LATTICE_EMBEDDING_BACKEND=sentence-transformers once installed.
+embeddings = [
+  "sentence-transformers>=2.2",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -55,6 +61,8 @@ files = [
   "src/lattice_digest/recommendation_calibration.py",
   "src/lattice_digest/source_health_ledger.py",
   "src/lattice_digest/library_taxonomy.py",
+  "src/lattice_digest/novelty.py",
+  "src/lattice_digest/embedding_store.py",
 ]
 
 [tool.pytest.ini_options]
