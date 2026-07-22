@@ -1,0 +1,26 @@
+# Hand-authored: a transient 503 followed by a healthy 200 JSON body, so the
+# retry-and-recover path is exercised end to end through the real stack.
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent: [lcd-test]
+    method: GET
+    uri: https://api.example.test/works
+  response:
+    body: {string: 'service unavailable'}
+    headers:
+      Content-Type: [text/plain]
+    status: {code: 503, message: Service Unavailable}
+- request:
+    body: null
+    headers:
+      User-Agent: [lcd-test]
+    method: GET
+    uri: https://api.example.test/works
+  response:
+    body: {string: '{"results":[{"id":"W1"}]}'}
+    headers:
+      Content-Type: [application/json]
+    status: {code: 200, message: OK}
+version: 1

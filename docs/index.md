@@ -6,12 +6,14 @@ Safety baseline: manual-only usage, dry-run default, explicit low-load mode, no-
 
 ## Manual operation
 
+- [Task runner (`invoke`)](invoke-tasks.md): `tasks.py` centralizes the blessed command/flag matrix (`invoke daily-run`, `invoke ci`, `invoke build-site`, …); plan-by-default, no scheduling.
 - [Manual operations runbook](manual-operations-runbook.md): safe daily operating commands, command safety matrix, generated artifact boundaries.
 - [Workflow command center](workflow-command-center.md): `daily`, `weekly`, `full`, `status`, and `doctor` command behavior.
 - [Manual low-load workflow](manual-low-load-workflow.md): explicit `--low-load`, `--no-network`, and `--offline` usage.
 - [Manual Codex quality run prompt](manual-codex-quality-run-prompt.md): quality-first copy/paste prompt for manual Codex runs only.
 - [Research scope taxonomy](research-scope-taxonomy.md): topical sections, inclusion rules, exclusion rules, and golden examples.
 - [Research report quality](research-report-quality.md): report polish rules for paper facts, ranking explanation, source health caveats, anchor evidence, and advisory metadata.
+- [Embedding-based novelty scoring](novelty-ranking.md): advisory semantic-distance signal (offline hashing embedder by default, optional `all-MiniLM-L6-v2`), persistent embedding corpus in `papers.db`.
 - [Query expansion and negative keywords](query-expansion-and-negative-keywords.md): anchored query expansion and false-positive suppression boundaries.
 - [Semantic Scholar enrichment](semantic-scholar-enrichment.md): optional metadata enrichment for existing papers; no API key is required for CI or normal digest generation.
 
