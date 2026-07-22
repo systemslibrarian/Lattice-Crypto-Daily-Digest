@@ -63,3 +63,7 @@ papers.db
 
 # Python package build metadata
 src/*.egg-info/
+
+# Generated website output (built by scripts/build_site.py, published via Pages)
+site/
+.site_preview/

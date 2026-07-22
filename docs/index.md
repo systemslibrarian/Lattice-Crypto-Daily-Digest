@@ -25,6 +25,10 @@ Safety baseline: manual-only usage, dry-run default, explicit low-load mode, no-
 - [Weekly handoff non-claims policy v0.2](research_tracks/weekly_handoff_non_claims_policy_v0.2.md): security, novelty, PI-topic, and publication claim boundaries.
 - [Weekly handoff troubleshooting](research_tracks/weekly_handoff_troubleshooting_v0.1.md): missing weekly JSON, empty output, pytest scope, and no-private-write checks.
 
+## Publishing
+
+- [Public website (GitHub Pages)](website.md): how the committed digests are rendered into a browsable site that redeploys automatically after each daily digest, plus local build instructions.
+
 ## Recovery and safety
 
 - [Recovery playbook](recovery-playbook.md): cleanup commands, reading queue backup, `papers.db` recovery, Windows SQLite file lock, tzdata / ZoneInfo.

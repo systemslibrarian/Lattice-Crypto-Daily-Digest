@@ -264,6 +264,15 @@ powershell.exe -ExecutionPolicy Bypass -File scripts\export_zotero.ps1 -Days 7 -
 
 GitHub Actions 的定位是 provisional collector，不应替代本地 authoritative backfill。
 
+## 公开网站：GitHub Pages
+
+`.github/workflows/pages.yml` 会把已提交的每日 / 每周 / 每月情报渲染成一个静态网站并发布到 GitHub Pages：
+
+- 站点由 `scripts/build_site.py` 从 `digests/` 下的 markdown 构建，包含首页（突出最新日报）、日报 / 周报 / 月报归档、逐篇页面、全站搜索和 RSS。
+- 通过 `workflow_run` 挂在每日 digest 工作流之后运行，因此每天新日报提交后网站会自动重建更新。
+- 一次性配置：仓库 `Settings -> Pages -> Build and deployment -> Source` 选择 `GitHub Actions`。
+- 详见 [docs/website.md](docs/website.md)。本地预览：`python -m pip install -e ".[site]"` 后运行 `python scripts/build_site.py --output site`。
+
 ## GitHub Secrets 配置
 
 邮件发送需要在 GitHub 仓库中配置 SMTP secrets：

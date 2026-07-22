@@ -1,0 +1,82 @@
+name: Publish Digest Website
+
+# Builds the static website from the committed digest markdown and deploys it to
+# GitHub Pages. It runs:
+#   * automatically after the "Daily Lattice Crypto Digest" workflow finishes
+#     (that workflow commits the new digest, so the site rebuilds each day), and
+#   * on direct pushes to main that touch digests, the generator, or this file, and
+#   * on demand via the Actions tab.
+#
+# One-time setup: repository Settings -> Pages -> "Build and deployment" ->
+# Source: "GitHub Actions".
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Daily Lattice Crypto Digest"]
+    types:
+      - completed
+  push:
+    branches:
+      - main
+    paths:
+      - "digests/**"
+      - "scripts/build_site.py"
+      - "scripts/site_assets.py"
+      - ".github/workflows/pages.yml"
+
+# Allow the workflow to publish to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one concurrent deployment; never cancel an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Skip only when triggered by a *failed* upstream daily run; always run for
+    # push / manual dispatch (which report event == '' for this expression).
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "markdown>=3.5"
+
+      - name: Build site
+        run: |
+          python scripts/build_site.py \
+            --output site \
+            --base-url "/${{ github.event.repository.name }}"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
